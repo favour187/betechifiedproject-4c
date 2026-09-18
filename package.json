@@ -1,0 +1,24 @@
+{
+  "name": "betechifiedproject-4c",
+  "version": "1.0.0",
+  "description": "BeTechified project 4c",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/favour187/betechifiedproject-4c.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/favour187/betechifiedproject-4c/issues"
+  },
+  "homepage": "https://github.com/favour187/betechifiedproject-4c#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
