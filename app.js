@@ -1,14 +1,59 @@
 const express = require('express');
 
-const app = express()
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-const PORT = process.env.PORT || 3000
+// Middleware
+app.use(express.json());
 
+// In-memory storage
+let notes = [
+  { id: 1, title: "First Note", content: "This is group 4c", createdAt: new Date(), updatedAt: new Date() }
+];
 
+// GET all notes
+app.get('/notes', (req, res) => {
+    res.json(notes);
+});
 
+// POST create note
+app.post('/notes', (req, res) => {
+    const { title, content } = req.body;
+    if (!title || !content) {
+        return res.status(400).json({ message: "Title and content required" });
+    }
+    const newNote = {
+        id: notes.length + 1,
+        title,
+        content,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    };
+    notes.push(newNote);
+    res.status(201).json(newNote);
+});
 
+// PUT /notes/:id - Update a note (your task)
+app.put('/notes/:id', (req, res) => {
+    const noteId = parseInt(req.params.id);
+    const { title, content } = req.body;
 
+    const noteIndex = notes.findIndex(note => note.id === noteId);
+    if (noteIndex === -1) {
+        return res.status(404).json({ message: "Note not found" });
+    }
+    if (!title || !content) {
+        return res.status(400).json({ message: "Title and content required" });
+    }
+    notes[noteIndex] = { 
+     ...notes[noteIndex],
+      title,
+      content,
+      updatedAt: new Date()
+     };
 
+    res.json(notes[noteIndex]);
+});
 
 app.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`)
