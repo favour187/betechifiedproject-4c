@@ -55,6 +55,21 @@ app.put('/notes/:id', (req, res) => {
     res.json(notes[noteIndex]);
 });
 
+// DELETE a note
+app.delete('/notes/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+
+    const note = notes.find(note => note.id === id);
+
+    if (!note) {
+        return res.status(404).json({ message: "Note not found" });
+    }
+
+    notes = notes.filter(note => note.id !== id);
+
+    res.status(200).json({ message: "Note deleted successfully" });
+});
+
 app.listen(PORT, () => {
     console.log(`server is running on port ${PORT}`)
 })
