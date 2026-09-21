@@ -1,4 +1,5 @@
 const express = require("express");
+const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -92,6 +93,8 @@ app.delete('/notes/:id', (req, res) => {
 
     res.status(200).json({ message: "Note deleted successfully" });
 });
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`server is running on port ${PORT}`);
