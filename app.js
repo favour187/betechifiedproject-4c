@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 });
 
 // GET all notes
-app.get("/notes", (req, res) => {
+app.get("/api/notes", (req, res) => {
   res.json(notes);
 });
 
@@ -48,7 +48,7 @@ app.get('/api/notes/:id', (req, res) => {
 });
 
 // POST create note
-app.post("/notes", (req, res) => {
+app.post("/api/notes", (req, res) => {
   const { title, content } = req.body;
   if (!title || !content) {
     return res.status(400).json({ message: "Title and content required" });
@@ -87,7 +87,7 @@ app.put("/api/notes/:id", (req, res) => {
 });
 
 // DELETE a note
-app.delete('/notes/:id', (req, res) => {
+app.delete('/api/notes/:id', (req, res) => {
     const note = notes.find(note => String(note.id) === req.params.id);
 
     if (!note) {
