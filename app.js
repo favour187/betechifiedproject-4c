@@ -1,6 +1,7 @@
 const {randomUUID} = require('crypto');
 const express = require("express");
 const errorHandler = require("./middleware/errorHandler");
+const notes = require("./data/notes");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -23,17 +24,6 @@ const middlewareLogger = (req, res, next) => {
 app.use(middlewareLogger);
 
 app.use(express.json());
-
-// In-memory storage
-let notes = [
-  {
-    id: 1,
-    title: "First Note",
-    content: "This is group 4c",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
 
 // GET all notes
 app.get("/notes", (req, res) => {
@@ -89,7 +79,7 @@ app.delete('/notes/:id', (req, res) => {
         return res.status(404).json({ message: "Note not found" });
     }
 
-    notes = notes.filter(note => note.id !== id);
+    notes.splice(notes.indexOf(note), 1);
 
     res.status(200).json({ message: "Note deleted successfully" });
 });
