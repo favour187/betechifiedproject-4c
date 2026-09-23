@@ -38,6 +38,15 @@ app.get("/notes", (req, res) => {
   res.json(notes);
 });
 
+// Get One Note
+app.get('/api/notes/:id', (req, res) => {
+    const note = notes.find(note => String(note.id) === req.params.id);
+    if (!note) {
+        return res.status(404).json({ message: "Note not found" });
+    }
+    res.json(note);
+});
+
 // POST create note
 app.post("/notes", (req, res) => {
   const { title, content } = req.body;
