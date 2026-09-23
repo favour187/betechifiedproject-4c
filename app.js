@@ -1,6 +1,6 @@
+const {randomUUID} = require('crypto');
 const express = require("express");
 const errorHandler = require("./middleware/errorHandler");
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -47,7 +47,7 @@ app.post("/notes", (req, res) => {
     return res.status(400).json({ message: "Title and content required" });
   }
   const newNote = {
-    id: notes.length + 1,
+    id: randomUUID(),
     title,
     content,
     createdAt: new Date(),
