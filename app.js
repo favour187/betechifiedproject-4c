@@ -1,3 +1,4 @@
+require('dotenv').config();
 const {randomUUID} = require('crypto');
 const express = require("express");
 const errorHandler = require("./middleware/errorHandler");
@@ -24,16 +25,13 @@ app.use(middlewareLogger);
 
 app.use(express.json());
 
-// In-memory storage
-let notes = [
-  {
-    id: 1,
-    title: "First Note",
-    content: "This is group 4c",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+// In-memory storage (shared data store from data/notes.js)
+let notes = require("./data/notes");
+
+// Health check (root)
+app.get("/", (req, res) => {
+  res.json({ status: "ok", message: "Note-Taking API is running" });
+});
 
 // GET all notes
 app.get("/notes", (req, res) => {
