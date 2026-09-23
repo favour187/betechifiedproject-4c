@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 });
 
 // GET all notes
-app.get("/notes", (req, res) => {
+app.get("/api/notes", (req, res) => {
   res.json(notes);
 });
 
@@ -48,7 +48,7 @@ app.get('/api/notes/:id', (req, res) => {
 });
 
 // POST create note
-app.post("/notes", (req, res) => {
+app.post("/api/notes", (req, res) => {
   const { title, content } = req.body;
   if (!title || !content) {
     return res.status(400).json({ message: "Title and content required" });
@@ -64,17 +64,18 @@ app.post("/notes", (req, res) => {
   res.status(201).json(newNote);
 });
 
-// PUT /notes/:id - Update a note (your task)
-app.put("/notes/:id", (req, res) => {
+// PUT /api/notes/:id - Update a note
+app.put("/api/notes/:id", (req, res) => {
   const { title, content } = req.body;
-
   const noteIndex = notes.findIndex((note) => String(note.id) === req.params.id);
+ 
   if (noteIndex === -1) {
     return res.status(404).json({ message: "Note not found" });
   }
   if (!title || !content) {
     return res.status(400).json({ message: "Title and content required" });
   }
+
   notes[noteIndex] = {
     ...notes[noteIndex],
     title,
@@ -82,11 +83,11 @@ app.put("/notes/:id", (req, res) => {
     updatedAt: new Date(),
   };
 
-  res.json(notes[noteIndex]);
+  return res.json(notes[noteIndex]);
 });
 
 // DELETE a note
-app.delete('/notes/:id', (req, res) => {
+app.delete('/api/notes/:id', (req, res) => {
     const note = notes.find(note => String(note.id) === req.params.id);
 
     if (!note) {
