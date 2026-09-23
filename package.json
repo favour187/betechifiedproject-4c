@@ -1,9 +1,11 @@
 {
   "name": "betechifiedproject-4c",
   "version": "1.0.0",
-  "description": "BeTechified project 4c",
+  "description": "Note-Taking API - Group 4c backend (Express)",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,6 +21,10 @@
   },
   "homepage": "https://github.com/favour187/betechifiedproject-4c#readme",
   "dependencies": {
+    "dotenv": "^18.0.3",
     "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
