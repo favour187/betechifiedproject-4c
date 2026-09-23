@@ -1,0 +1,244 @@
+{
+  "info": {
+    "_postman_id": "ff802167-a0bb-4877-b935-667c40ff3b02",
+    "name": "GROUP 4 Note API",
+    "description": "Note-Taking API - Group 4c (Node.js + Express).\n\nAll endpoints live under `/api/notes`. Set the `base_url` variable (default http://localhost:3000), start the server (`npm start`), then run the requests top to bottom - the POST request saves the new note's id into `note_id` automatically so GET-one/PUT/DELETE work right after.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "23148135"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "note_id",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Get all notes",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/notes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes"
+          ]
+        },
+        "description": "Returns every note in the store."
+      }
+    },
+    {
+      "name": "2. Create note",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () { pm.response.to.have.status(201); });",
+              "const body = pm.response.json();",
+              "pm.test(\"Note has an id\", function () { pm.expect(body.id).to.be.a(\"string\"); });",
+              "if (body.id) { pm.collectionVariables.set(\"note_id\", body.id); }",
+              "pm.test(\"Missing fields rejected is separate request - this one must return the note\", function () { pm.expect(body).to.have.property(\"title\"); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"My first note\",\n  \"content\": \"Hello from Group 4c!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/notes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes"
+          ]
+        },
+        "description": "Creates a note ({ id, title, content, createdAt, updatedAt }). Requires both title and content (else 400). Saves the new id into note_id."
+      }
+    },
+    {
+      "name": "3. Get one note",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/notes/{{note_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes",
+            "{{note_id}}"
+          ]
+        },
+        "description": "Returns a single note by id (404 if not found). Uses the note_id variable set by request 2."
+      }
+    },
+    {
+      "name": "4. Update note",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Updated title\",\n  \"content\": \"This note was edited via PUT.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/notes/{{note_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes",
+            "{{note_id}}"
+          ]
+        },
+        "description": "Updates title/content and bumps updatedAt. createdAt is preserved."
+      }
+    },
+    {
+      "name": "5. Delete note",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/notes/{{note_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes",
+            "{{note_id}}"
+          ]
+        },
+        "description": "Deletes the note (200 with message; 404 on repeat)."
+      }
+    },
+    {
+      "name": "6. Invalid create (validation check)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 400\", function () { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"missing content\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/notes",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "notes"
+          ]
+        },
+        "description": "Edge case: content missing -> 400 Bad Request."
+      }
+    }
+  ]
+}
