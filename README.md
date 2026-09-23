@@ -40,16 +40,14 @@ The server runs at **http://localhost:3000** (entry file: `app.js`).
 
 ## 📑 API Endpoints
 
-| Method | Route         | Description                | Success       | Errors             |
-| :----- | :------------ | :------------------------- | :------------ | :----------------- |
-| `GET`    | `/notes`      | Retrieve all notes         | `200 OK`      | —                  |
-| `GET`    | `/notes/:id`  | Retrieve a single note     | `200 OK`      | `404 Not Found`    |
-| `POST`   | `/notes`      | Create a new note          | `201 Created` | `400 Bad Request`  |
-| `PUT`    | `/notes/:id`  | Update an existing note    | `200 OK`      | `400` / `404`      |
-| `DELETE` | `/notes/:id`  | Remove a note              | `200 OK`      | `404 Not Found`    |
-
-> **Note:** the final spec requires these routes under the `/api` prefix (e.g. `/api/notes`).
-> The migration is pending — until then the live base path is `/notes`.
+| Method | Route               | Description                | Success       | Errors             |
+| :----- | :------------------ | :------------------------- | :------------ | :----------------- |
+| `GET`    | `/api/notes`        | Retrieve all notes         | `200 OK`      | —                  |
+| `GET`    | `/api/notes/:id`    | Retrieve a single note     | `200 OK`      | `404 Not Found`    |
+| `POST`   | `/api/notes`        | Create a new note          | `201 Created` | `400 Bad Request`  |
+| `PUT`    | `/api/notes/:id`    | Update an existing note    | `200 OK`      | `400` / `404`      |
+| `DELETE` | `/api/notes/:id`    | Remove a note              | `200 OK`      | `404 Not Found`    |
+| `GET`    | `/`                 | Health check               | `200 OK`      | —                  |
 
 ### Note structure
 
@@ -67,20 +65,20 @@ The server runs at **http://localhost:3000** (entry file: `app.js`).
 
 ```bash
 # Create a note
-curl -X POST http://localhost:3000/notes \
+curl -X POST http://localhost:3000/api/notes \
   -H "Content-Type: application/json" \
   -d '{"title":"My note","content":"Hello world"}'
 
 # Get all notes
-curl http://localhost:3000/notes
+curl http://localhost:3000/api/notes
 
 # Update note 1
-curl -X PUT http://localhost:3000/notes/1 \
+curl -X PUT http://localhost:3000/api/notes/1 \
   -H "Content-Type: application/json" \
   -d '{"title":"Updated","content":"New content"}'
 
 # Delete note 1
-curl -X DELETE http://localhost:3000/notes/1
+curl -X DELETE http://localhost:3000/api/notes/1
 ```
 
 ---
@@ -97,8 +95,9 @@ curl -X DELETE http://localhost:3000/notes/1
 ## 🧪 Postman Testing
 
 1. Launch the Postman Desktop App.
-2. Create requests against `http://localhost:3000/notes` (one per endpoint above).
-3. A shared collection file will be exported into the `postman/` folder — watch this space.
+2. **Import** → select `postman/GROUP_4_Note_API.postman_collection.json`.
+3. Start the server (`npm start`), then send requests top to bottom — the create-request saves the new note's id into the `note_id` variable automatically, so Get-one / Update / Delete work right after.
+4. Or run everything at once with the **Collection Runner** (includes a 400-validation edge case).
 
 ---
 
@@ -121,13 +120,12 @@ curl -X DELETE http://localhost:3000/notes/1
 
 ### 🔜 Remaining work
 - [ ] `feature/get-all` — push the GET-all implementation (replace temporary scaffold)
-- [ ] `GET /notes/:id` — get-one endpoint (still missing entirely)
-- [ ] Migrate routes to the `/api/notes` prefix (spec requirement)
-- [ ] Export the Postman collection into `postman/`
 - [ ] Deployment (Render/Railway) + presentation slides
 
 ### ✅ Recently completed
-- [x] UUID IDs for created notes (`randomUUID`) + string-safe PUT/DELETE lookups
-- [x] Create note (`POST`) — merged (PR #5)
-- [x] Mock data store wired into `app.js` (PR #6)
-- [x] Centralized error handler (PR #2) & request logger
+- [x] **All 5 endpoints live under `/api/notes`** (migration completed in PR #11)
+- [x] `GET /api/notes/:id` get-one endpoint (PR #10)
+- [x] Postman collection exported to `postman/GROUP_4_Note_API.postman_collection.json` (PR #9)
+- [x] UUID IDs (`randomUUID`) + string-safe PUT/DELETE lookups
+- [x] dotenv config, health check `GET /`, `npm start` / `npm run dev` scripts (PR #4)
+- [x] Create note (`POST`) — PR #5 · data store — PR #6 · error handler — PR #2 · logger
