@@ -1,0 +1,36 @@
+name: Branch Activity Log
+
+on:
+  push:
+    branches-ignore:
+      - main
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  log-push:
+    if: github.event.deleted != true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment on tracking issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pusher = context.payload.pusher.name;
+            const branch = context.ref.replace('refs/heads/', '');
+            const commits = context.payload.commits || [];
+            const list = commits.length
+              ? commits.map(c => '- `' + c.id.slice(0,7) + '` ' + c.message.split('\n')[0]).join('\n')
+              : '- (branch created / no commit details)';
+            const repoUrl = context.payload.repository.html_url;
+            const compare = repoUrl + '/compare/' + context.sha + '~1..' + context.sha;
+            const body = '📡 **' + pusher + '** pushed to `' + branch + '` (' + commits.length + ' commit(s)):\n'
+              + list + '\n🔗 Changes: ' + compare;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: 8,
+              body: body
+            });

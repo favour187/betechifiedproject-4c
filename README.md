@@ -114,15 +114,20 @@ curl -X DELETE http://localhost:3000/notes/1
 | 6 | Bright           | `@bright-web007`        | Error-handling middleware     | `feature/Error-handler`       | ✅ Merged (PR #2)  |
 | 7 | Shadie           | `@williamshadie52-oss`  | Get all notes (`GET /notes`)  | `feature/get-all`             | ⏳ Branch open — awaiting push |
 | 8 | S.t.e.a.m        | TBA                     | Get one note (`GET /notes/:id`) | *to create branch*          | ⏳ Not started     |
-| 9 | Tolex            | `@Tolex081`             | Model & data store            | *to create branch*            | ⏳ Not started     |
-| 10 | Osifo Prudent   | *(no GitHub yet)*       | Create note (`POST`)          | *to create branch*            | ⏳ Not started     |
-| 11 | Laureen         | `@Laureen-L`            | Express/project setup support | `main`                        | ✅                 |
-| 12 | Eze Chimzurum   | `@CHIZYDIGITALS`        | Documentation (README)        | `feature/docs`                | 🔄 This PR         |
+| 9 | Tolex            | `@Tolex081`             | Mock data store (`data/notes.js`, wired into `app.js`) | `feature/data-store`          | ✅ Merged (PR #6)  |
+| 10 | Osifo Prudent   | `@Dentdev-dev`          | Create note (`POST`)          | `Prudent-creating-note-route` | ✅ Merged (PR #5)  |
+| 11 | Laureen         | `@Laureen-L`            | Express setup (dotenv, health route, npm scripts) | `feature/express-setup`       | ✅ Merged (PR #4)  |
+| 12 | Eze Chimzurum   | `@CHIZYDIGITALS`        | Documentation (README)        | `feature/docs`                | ✅ Merged (PR #3)  |
 
 ### 🔜 Remaining work
 - [ ] `feature/get-all` — push the GET-all implementation (replace temporary scaffold)
 - [ ] `GET /notes/:id` — get-one endpoint (still missing entirely)
 - [ ] Migrate routes to the `/api/notes` prefix (spec requirement)
-- [ ] Switch IDs from numeric `length + 1` to **UUID** (current scheme duplicates IDs after a delete)
 - [ ] Export the Postman collection into `postman/`
 - [ ] Deployment (Render/Railway) + presentation slides
+
+### ✅ Recently completed
+- [x] UUID IDs for created notes (`randomUUID`) + string-safe PUT/DELETE lookups
+- [x] Create note (`POST`) — merged (PR #5)
+- [x] Mock data store wired into `app.js` (PR #6)
+- [x] Centralized error handler (PR #2) & request logger

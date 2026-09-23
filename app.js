@@ -1,6 +1,7 @@
+require('dotenv').config();
+const {randomUUID} = require('crypto');
 const express = require("express");
 const errorHandler = require("./middleware/errorHandler");
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -24,16 +25,13 @@ app.use(middlewareLogger);
 
 app.use(express.json());
 
-// In-memory storage
-let notes = [
-  {
-    id: 1,
-    title: "First Note",
-    content: "This is group 4c",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-];
+// In-memory storage (shared data store from data/notes.js)
+let notes = require("./data/notes");
+
+// Health check (root)
+app.get("/", (req, res) => {
+  res.json({ status: "ok", message: "Note-Taking API is running" });
+});
 
 // GET all notes
 app.get("/notes", (req, res) => {
@@ -47,7 +45,7 @@ app.post("/notes", (req, res) => {
     return res.status(400).json({ message: "Title and content required" });
   }
   const newNote = {
-    id: notes.length + 1,
+    id: randomUUID(),
     title,
     content,
     createdAt: new Date(),
@@ -59,10 +57,9 @@ app.post("/notes", (req, res) => {
 
 // PUT /notes/:id - Update a note (your task)
 app.put("/notes/:id", (req, res) => {
-  const noteId = parseInt(req.params.id);
   const { title, content } = req.body;
 
-  const noteIndex = notes.findIndex((note) => note.id === noteId);
+  const noteIndex = notes.findIndex((note) => String(note.id) === req.params.id);
   if (noteIndex === -1) {
     return res.status(404).json({ message: "Note not found" });
   }
@@ -81,15 +78,13 @@ app.put("/notes/:id", (req, res) => {
 
 // DELETE a note
 app.delete('/notes/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-
-    const note = notes.find(note => note.id === id);
+    const note = notes.find(note => String(note.id) === req.params.id);
 
     if (!note) {
         return res.status(404).json({ message: "Note not found" });
     }
 
-    notes = notes.filter(note => note.id !== id);
+    notes = notes.filter(note => String(note.id) !== req.params.id);
 
     res.status(200).json({ message: "Note deleted successfully" });
 });
