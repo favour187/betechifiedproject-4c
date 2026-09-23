@@ -59,10 +59,9 @@ app.post("/notes", (req, res) => {
 
 // PUT /notes/:id - Update a note (your task)
 app.put("/notes/:id", (req, res) => {
-  const noteId = parseInt(req.params.id);
   const { title, content } = req.body;
 
-  const noteIndex = notes.findIndex((note) => note.id === noteId);
+  const noteIndex = notes.findIndex((note) => String(note.id) === req.params.id);
   if (noteIndex === -1) {
     return res.status(404).json({ message: "Note not found" });
   }
@@ -81,15 +80,13 @@ app.put("/notes/:id", (req, res) => {
 
 // DELETE a note
 app.delete('/notes/:id', (req, res) => {
-    const id = parseInt(req.params.id);
-
-    const note = notes.find(note => note.id === id);
+    const note = notes.find(note => String(note.id) === req.params.id);
 
     if (!note) {
         return res.status(404).json({ message: "Note not found" });
     }
 
-    notes = notes.filter(note => note.id !== id);
+    notes = notes.filter(note => String(note.id) !== req.params.id);
 
     res.status(200).json({ message: "Note deleted successfully" });
 });
