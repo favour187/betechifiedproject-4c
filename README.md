@@ -111,7 +111,7 @@ curl -X DELETE http://localhost:3000/api/notes/1
 | 4 | Kaycee           | `@kayce33`              | Delete note (`DELETE`)        | `Delete`                      | ✅ Merged          |
 | 5 | Mauka Photography| `@Daniel-Nganga`        | Logger middleware             | `feature/logger-middleware`   | ✅ Merged          |
 | 6 | Bright           | `@bright-web007`        | Error-handling middleware     | `feature/Error-handler`       | ✅ Merged (PR #2)  |
-| 7 | Shadie           | `@williamshadie52-oss`  | Get all notes (`GET /notes`)  | `feature/get-all`             | ⏳ Branch open — awaiting push |
+| 7 | Shadie (Shadreck William) | `@williamshadie52-oss`  | Get all notes (`GET /api/notes`, explicit 200) | `feature/get-all`             | ✅ Merged (PR #12) |
 | 8 | S.t.e.a.m        | TBA                     | Get one note (`GET /notes/:id`) | *to create branch*          | ⏳ Not started     |
 | 9 | Tolex            | `@Tolex081`             | Mock data store (`data/notes.js`, wired into `app.js`) | `feature/data-store`          | ✅ Merged (PR #6)  |
 | 10 | Osifo Prudent   | `@Dentdev-dev`          | Create note (`POST`)          | `Prudent-creating-note-route` | ✅ Merged (PR #5)  |
@@ -119,10 +119,10 @@ curl -X DELETE http://localhost:3000/api/notes/1
 | 12 | Eze Chimzurum   | `@CHIZYDIGITALS`        | Documentation (README)        | `feature/docs`                | ✅ Merged (PR #3)  |
 
 ### 🔜 Remaining work
-- [ ] `feature/get-all` — push the GET-all implementation (replace temporary scaffold)
-- [ ] Deployment (Render/Railway) + presentation slides
+- [ ] Deployment (Render/Railway) + presentation slides — Team E
 
 ### ✅ Recently completed
+- [x] **All 5 endpoint tasks delivered by their owners** — last one: GET-all by Shadie (PR #12) 🎉
 - [x] **All 5 endpoints live under `/api/notes`** (migration completed in PR #11)
 - [x] `GET /api/notes/:id` get-one endpoint (PR #10)
 - [x] Postman collection exported to `postman/GROUP_4_Note_API.postman_collection.json` (PR #9)
