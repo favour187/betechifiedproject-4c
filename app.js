@@ -11,11 +11,12 @@ let notes = [
   { id: 1, title: "First Note", content: "This is group 4c", createdAt: new Date(), updatedAt: new Date() }
 ];
 
-// GET all notes
 app.get('/notes', (req, res) => {
-    res.json(notes);
+    res.status(200).json(notes);
 });
-
+app.get('/api/notes', (req, res) => {
+    res.status(200).json(notes);
+});
 // POST create note
 app.post('/notes', (req, res) => {
     const { title, content } = req.body;
