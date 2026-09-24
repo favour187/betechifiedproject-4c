@@ -33,9 +33,9 @@ app.get("/", (req, res) => {
   res.json({ status: "ok", message: "Note-Taking API is running" });
 });
 
-// GET all notes
+// GET all notes (Member 5 - Shadie)
 app.get("/api/notes", (req, res) => {
-  res.json(notes);
+  res.status(200).json(notes);
 });
 
 // Get One Note
