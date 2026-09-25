@@ -1,106 +1,50 @@
-require('dotenv').config();
-const {randomUUID} = require('crypto');
-const express = require("express");
-const errorHandler = require("./middleware/errorHandler");
+const express = require('express');
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // Middleware
-const middlewareLogger = (req, res, next) => {
-  const timestamp = new Date().toLocaleString("en-GB", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-    hour12: false,
-  });
-  console.log(`${timestamp} `);
-  console.log(`${req.method} ${req.url}`);
-  next();
-};
-
-app.use(middlewareLogger);
-
 app.use(express.json());
 
-// In-memory storage (shared data store from data/notes.js)
-let notes = require("./data/notes");
+// In-memory storage
+let todos = [{id: 1, title: "My first task"}];
+let currentId = 2;
 
-// Health check (root)
-app.get("/", (req, res) => {
-  res.json({ status: "ok", message: "Note-Taking API is running" });
+// Routes
+// 1. GET all todos - you already tested this and it works
+app.get('/api/todos', (req, res) => {
+  res.json(todos);
 });
 
-// GET all notes (Member 5 - Shadie)
-app.get("/api/notes", (req, res) => {
-  res.status(200).json(notes);
+// 2. GET one todo by id
+app.get('/api/todos/:id', (req, res) => {
+  const todo = todos.find(t => t.id === parseInt(req.params.id));
+  if (!todo) return res.status(404).json({ message: "Todo not found" });
+  res.json(todo);
 });
 
-// Get One Note
-app.get('/api/notes/:id', (req, res) => {
-    const note = notes.find(note => String(note.id) === req.params.id);
-    if (!note) {
-        return res.status(404).json({ message: "Note not found" });
-    }
-    res.json(note);
-});
-
-// POST create note
-app.post("/api/notes", (req, res) => {
-  const { title, content } = req.body;
-  if (!title || !content) {
-    return res.status(400).json({ message: "Title and content required" });
+// 3. POST - create a new todo
+app.post('/api/todos', (req, res) => {
+  if (!req.body.title) {
+    return res.status(400).json({ message: "Title is required" });
   }
-  const newNote = {
-    id: randomUUID(),
-    title,
-    content,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-  notes.push(newNote);
-  res.status(201).json(newNote);
+  const newTodo = { id: currentId++, title: req.body.title };
+  todos.push(newTodo);
+  res.status(201).json(newTodo);
 });
 
-// PUT /api/notes/:id - Update a note
-app.put("/api/notes/:id", (req, res) => {
-  const { title, content } = req.body;
-  const noteIndex = notes.findIndex((note) => String(note.id) === req.params.id);
- 
-  if (noteIndex === -1) {
-    return res.status(404).json({ message: "Note not found" });
-  }
-  if (!title || !content) {
-    return res.status(400).json({ message: "Title and content required" });
-  }
-
-  notes[noteIndex] = {
-    ...notes[noteIndex],
-    title,
-    content,
-    updatedAt: new Date(),
-  };
-
-  return res.json(notes[noteIndex]);
+// 4. PUT - update a todo
+app.put('/api/todos/:id', (req, res) => {
+  const todo = todos.find(t => t.id === parseInt(req.params.id));
+  if (!todo) return res.status(404).json({ message: "Todo not found" });
+  todo.title = req.body.title || todo.title;
+  res.json(todo);
 });
 
-// DELETE a note
-app.delete('/api/notes/:id', (req, res) => {
-    const note = notes.find(note => String(note.id) === req.params.id);
-
-    if (!note) {
-        return res.status(404).json({ message: "Note not found" });
-    }
-
-    notes = notes.filter(note => String(note.id) !== req.params.id);
-
-    res.status(200).json({ message: "Note deleted successfully" });
+// 5. DELETE - delete a todo
+app.delete('/api/todos/:id', (req, res) => {
+  todos = todos.filter(t => t.id !== parseInt(req.params.id));
+  res.json({ message: "Deleted" });
 });
 
-app.use(errorHandler);
-
-app.listen(PORT, () => {
-  console.log(`server is running on port ${PORT}`);
+app.listen(3000, () => {
+  console.log('Server is running on http://localhost:3000');
 });
