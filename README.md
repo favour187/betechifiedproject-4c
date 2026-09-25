@@ -3,6 +3,10 @@
 A lightweight RESTful API for managing personal notes, built with **Node.js + Express**.
 Backend only — no frontend. All testing is done with **Postman**.
 
+> **🔴 LIVE IN PRODUCTION:** https://betechifiedproject-4c.onrender.com
+> Health check: https://betechifiedproject-4c.onrender.com — e.g. `GET https://betechifiedproject-4c.onrender.com/api/notes`
+> (Free tier: the service sleeps after ~15 min idle; first request may take ~50s to wake it.)
+
 ---
 
 ## 🛠 Tech Stack
@@ -96,6 +100,7 @@ curl -X DELETE http://localhost:3000/api/notes/1
 
 1. Launch the Postman Desktop App.
 2. **Import** → select `postman/GROUP_4_Note_API.postman_collection.json`.
+   - To test production: set the `base_url` variable to `https://betechifiedproject-4c.onrender.com` (default is `http://localhost:3000`).
 3. Start the server (`npm start`), then send requests top to bottom — the create-request saves the new note's id into the `note_id` variable automatically, so Get-one / Update / Delete work right after.
 4. Or run everything at once with the **Collection Runner** (includes a 400-validation edge case).
 
@@ -119,7 +124,8 @@ curl -X DELETE http://localhost:3000/api/notes/1
 | 12 | Eze Chimzurum   | `@CHIZYDIGITALS`        | Documentation (README)        | `feature/docs`                | ✅ Merged (PR #3)  |
 
 ### 🔜 Remaining work
-- [ ] Deployment (Render/Railway) + presentation slides — Team E
+- [x] ~~Deployment (Render)~~ ✅ **LIVE:** https://betechifiedproject-4c.onrender.com
+- [ ] Presentation slides + live demo — Team E
 
 ### ✅ Recently completed
 - [x] **All 5 endpoint tasks delivered by their owners** — last one: GET-all by Shadie (PR #12) 🎉
